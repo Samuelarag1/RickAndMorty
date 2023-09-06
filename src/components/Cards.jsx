@@ -1,12 +1,12 @@
 import Card from './Card';
+import styles from './Cards.module.css'
 
-export default function Cards(props) {
-    console.log(props);
+export default function Cards({characters, onClose}) {
+
     return(
-        <div>
+        <div className={styles['container-cards']}>
         {        
-        
-            props.characters.map((caracter,index) => {
+            characters.map((caracter,index) => {
         return(    
         <Card key={index}
             name={caracter.name}
@@ -15,6 +15,7 @@ export default function Cards(props) {
             gender={caracter.gender}
             origin={caracter.name.origin}
             image={caracter.image} 
+            onClose={() => onClose(caracter.id)}
         />
             );
         })

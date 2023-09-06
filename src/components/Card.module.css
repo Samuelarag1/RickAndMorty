@@ -1,8 +1,16 @@
 .container{
-    background-color: black;
+    background-color: rgb(131, 168, 116);
     opacity: 80%;
     margin: 20px;
     padding: 20px;
     border-radius: 10px;
     color: white;
+    transition: transform .2s; /*! transition */
+}
+.container:hover{
+    cursor: pointer;
+    box-shadow: 1px 1px 50px 5px #3e5241;
+    /* border: 2px solid #ffffff ; */
+
+    transform: scale(1.05);/*!Efecto Zoom */
 }

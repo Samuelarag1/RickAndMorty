@@ -2,17 +2,12 @@ import React, { useState } from "react";
 import SearchBar from './SearchBar.jsx';
 
 
-function Nav(props){
+function Nav( { onSearch }) {
 
-    const [query,setQuery] = useState('');
 
-    const handleOnSearch = () =>{
-        props.onSearch();
-        setQuery('');
-    }
     return(
         <div>
-         <SearchBar onSearch={handleOnSearch}/>
+         <SearchBar onSearch={onSearch}/>
         </div>
     );
 }
