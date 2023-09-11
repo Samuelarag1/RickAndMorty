@@ -1,5 +1,5 @@
-import Card from './Card';
-import styles from './Cards.module.css'
+import Card from '../card/Card';
+import styles from '../cards/Cards.module.css'
 
 export default function Cards({characters, onClose}) {
 
@@ -8,7 +8,7 @@ export default function Cards({characters, onClose}) {
         {        
             characters.map((caracter,index) => {
         return(    
-        <Card key={index}
+        <Card id={caracter.id}
             name={caracter.name}
             status={caracter.status}
             species={caracter.species}
