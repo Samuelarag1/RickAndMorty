@@ -2,18 +2,23 @@ import { React } from "react";
 
 
 export default function Forms(props){
-    return(
+  
+console.log('Hola')
+
+  return(
         <div>
             <h1>Login</h1>
             <form style={{textAlign:'center',lineHeight:"40px"}}>
 
-                <label>Name:</label>
+                <label>Username:</label>
                 <input
                 type="text"
                 name=""
                 id=""
                 />
+
                 <br />
+        
                 <label>Password:</label>
                 <input
                 type="text"
@@ -21,6 +26,7 @@ export default function Forms(props){
                 id=""
                 />
                 <br />
+                
                 <button type="submit">Login</button>
             </form>
         </div>

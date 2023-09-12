@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import About from './components/about/about';
 import Cards from './components/cards/Cards';
@@ -7,6 +7,7 @@ import Detail from './components/detail/Detail';
 import Nav from './components/nav/Nav'
 import './App.css';
 import Errors from './components/error/errors';
+import Forms from './components/forms/Forms';
 
 
 function App() {
@@ -27,11 +28,12 @@ function App() {
      const onClose = (id) =>{
         setCharacters(characters.filter(char => char.id != id))
      }
-
+    const location = useLocation();
     return (
       <div className='App'>
-        <Nav onSearch={onSearch}/>
+      {location.pathname !== '/' && <Nav onSearch={onSearch}/>}
       <Routes>
+        <Route path='/' element={<Forms/>}/>
         <Route path='/home' element={<Cards characters={characters} onClose={onClose}/>}/>
         <Route path='/about' element={<About/>}/>
         <Route path='/detail/:id' element={<Detail/>}/>
