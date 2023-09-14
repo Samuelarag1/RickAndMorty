@@ -1,29 +1,51 @@
-import { React } from "react";
+import { React, useState } from "react";
 
 
-export default function Forms(props){
-  
-console.log('Hola')
+export default function Forms({login}){
+
+
+    const handleSubmit = (e) =>{
+        e.preventDefault();
+        login(userData);
+    }
+
+    const [userData,setUserData] = useState({
+        email: '',
+        password: ''
+    });
+
+    const handleChange = (e) =>{
+        setUserData({
+            ...userData,
+            [e.target.name]: e.target.value
+        });  
+    }
+
+    const [errors, setErrors] = useState({});
+    
 
   return(
         <div>
             <h1>Login</h1>
-            <form style={{textAlign:'center',lineHeight:"40px"}}>
+            <form onSubmit={handleSubmit} style={{textAlign:'center',lineHeight:"40px"}}>
 
                 <label>Username:</label>
                 <input
                 type="text"
-                name=""
-                id=""
-                />
+                name="email"
 
+                value={userData.email}
+                onChange={handleChange}
+                />
                 <br />
         
                 <label>Password:</label>
                 <input
-                type="text"
-                name=""
-                id=""
+                type="Password"
+                name="password"
+
+                value={userData.password}
+                onChange={handleChange}
                 />
                 <br />
                 
