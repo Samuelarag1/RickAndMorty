@@ -1,27 +1,16 @@
 import React from "react";
 import { connect } from "react-redux";
+import Cards from "../cards/Cards";
 
-export function mapStateToProps(state) {
+function mapStateToProps(state) {
   return {
     myFavorites: state.myFavorites,
   };
 }
-export const Favorites = (props) => {
-  console.log(props);
+const Favorites = ({ myFavorites }) => {
   return (
     <div>
-      {myFavorites?.map((favs) => (
-        <Card
-          id={index}
-          name={favs.name}
-          status={favs.status}
-          species={favs.species}
-          gender={favs.gender}
-          origin={favs.name.origin}
-          image={favs.image}
-          onClose={() => onClose(favs.id)}
-        />
-      ))}
+      <Cards characters={myFavorites} />
     </div>
   );
 };

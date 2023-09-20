@@ -4,10 +4,7 @@ import styles from "./Card.module.css";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
-// const mapDispatchToProps = {
-//   addFav,
-//   removeFav,
-// };
+//! FUNCTIONS
 export function mapDispatchToProps(dispatch) {
   return {
     addFav: function (character) {
@@ -25,42 +22,62 @@ const mapStateToProps = (props) => {
   };
 };
 
+//? Inicio de Card
+
 function Card(props) {
+  //! Inicio de Card
+
+  //! DESTRUCTURING
+  const { id, name, species, gender, status, image, character, onClose } =
+    props;
+
+  //! ESTADOS
+
   //* DESAFÍO: te desafiamos a que reconstruyas ese useEffect, pero utilizando un bucle For en lugar de un .forEach().
   useEffect(() => {
-    props.myFavorites.forEach((fav) => {
-      if (fav.id === props.id) {
+    props.myFavorites?.forEach((fav) => {
+      if (fav.id === id) {
         setIsFav(true);
       }
     });
   }, [props.myFavorites]);
 
-  const [isFav, setIsFav] = useState(true);
-
-  const handleFavorite = () => {
-    if (isFav) {
-      removeFav(props.id);
+  const [isFav, setIsFav] = useState(false);
+  //! FUNCIONES
+  const handleFavorite = (data) => {
+    if (isFav === true) {
       setIsFav(false);
+      props.removeFav(data);
     }
-    if (!isFav) {
+    if (isFav === false) {
       setIsFav(true);
-      addFav(props.id);
+      props.addFav({
+        id,
+        name,
+        species,
+        gender,
+        status,
+        image,
+      });
     }
   };
 
   return (
     <div className={styles.container}>
-      <button onClick={props.onClose}>X</button>
-      <button onClick={handleFavorite}>{isFav ? "❤️" : "🤍"}</button>
+      {isFav ? (
+        <button onClick={() => handleFavorite(id)}>❤️</button>
+      ) : (
+        <button onClick={() => handleFavorite(name)}>🤍</button>
+      )}
 
-      <Link to={`/detail/${props.id}`}>
-        <h2>{props.name} </h2>
+      <button onClick={onClose}>X</button>
+      <Link to={`/detail/${id}`}>
+        <h2>{name} </h2>
       </Link>
-
-      <h2>{props.species}</h2>
-      <h2>{props.gender}</h2>
-      <h2>{props.status}</h2>
-      <img src={props.image} alt={props.name} />
+      <h2>{species}</h2>
+      <h2>{gender}</h2>
+      <h2>{status}</h2>
+      <img src={image} alt={name} />
     </div>
   );
 }

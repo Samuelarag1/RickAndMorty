@@ -8,7 +8,7 @@ import Nav from "./components/nav/Nav";
 import "./App.css";
 import Errors from "./components/error/errors";
 import Forms from "./components/forms/Forms";
-import { Favorites } from "./components/favorites/Favorites";
+import Favorites from "./components/favorites/Favorites";
 
 function App() {
   //Acceso a la APP
