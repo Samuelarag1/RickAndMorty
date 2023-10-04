@@ -4,54 +4,69 @@ import axios from "axios";
 import About from "./components/about/about";
 import Cards from "./components/cards/Cards";
 import Detail from "./components/detail/Detail";
-import Nav from "./components/nav/Nav";
-import "./App.css";
 import Errors from "./components/error/errors";
 import Forms from "./components/forms/Forms";
 import Favorites from "./components/favorites/Favorites";
+import Nav from "./components/nav/Nav";
+import "./App.css";
 
 function App() {
-  //Acceso a la APP
+  //*DECLARACION DE HOOKS
+  //! Creacion de Personajes
+  const [characters, setCharacters] = useState([]);
+  //! Acceso a la APP
   const [access, setAccess] = useState(false);
+  //! Nos redirecciona
+  const navigate = useNavigate();
+  //! Donde estamos posicionados a la hora de hacer login
+  const location = useLocation();
 
+  //* VARIABLES
   const email = "";
   const password = "";
 
-  const navigate = useNavigate();
+  //* FUNCIONES
 
-  const login = (userData) => {
-    if (userData.email === email && userData.password === password) {
-      setAccess(true);
-      navigate("/home");
+  //! Funcion Async Await de login
+  async function login(userData) {
+    try {
+      const { email, password } = userData;
+      const URL = "http://localhost:3001/rickandmorty/login";
+      const { data } = await axios(
+        URL + `?email=${email}&password=${password}`
+      );
+      setAccess(data.access);
+      data.access && navigate("/home");
+    } catch (error) {
+      throw new Error(error);
     }
-  };
-  //Redireccion en caso de no acceder con los datos ingresados
+  }
+  //! Redireccion en caso de no acceder con los datos ingresados
   useEffect(() => {
     !access && navigate("/");
   }, [access]);
 
-  const [characters, setCharacters] = useState([]);
+  //! llamada a la API desde barra de busqueda
 
-  // llamada a la API
-  function onSearch(id) {
-    axios(`http://localhost:3001/rickandmorty/character/${id}`).then(
-      ({ data }) => {
-        if (data.name) {
-          setCharacters((oldChars) => [...oldChars, data]);
-        } else {
-          window.alert("¡No hay personajes con este ID!");
-        }
-      }
-    );
+  async function onSearch(id) {
+    const duplicate = characters.filter((char) => char.id === Number(id));
+    if (duplicate.length) {
+      return alert("Ese personaje ya está agregado!!");
+    }
+    try {
+      const { data } = await axios.get(
+        `http://localhost:3001/rickandmorty/character/${id}`
+      );
+      setCharacters((oldChars) => [...oldChars, data]);
+    } catch {
+      alert("¡No hay personajes con este ID!");
+    }
   }
 
-  // para saber que card borrar
+  //! BORRAR CARD
   const onClose = (id) => {
-    setCharacters(characters.filter((char) => char.id != id));
+    setCharacters(characters.filter((char) => char.id !== Number(id)));
   };
-
-  // location para poder saber donde estamos posicionados a la hora de hacer login
-  const location = useLocation();
 
   return (
     <div className="App">

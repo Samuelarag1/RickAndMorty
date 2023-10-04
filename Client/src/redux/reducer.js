@@ -1,49 +1,57 @@
-import { ADD_FAV, FILTER, ORDER, REMOVE_FAV } from "../redux/actions";
+import { ADD_FAV, FILTER, ORDER, REMOVE_FAV } from "./action-types.js";
 
 const initialState = {
-  myFavorites: [],
+  myFavorites: [], //* [ {rick}, {morty, id: 2}, {beth} ]
   allCharacters: [],
+  user: "",
+  errors: false,
 };
 
-const reducer = (state = initialState, action) => {
-  switch (action.type) {
+export default function reducer(state = initialState, { type, payload }) {
+  //* action = { type, payload }
+  // console.log(typeof payload)
+  switch (type) {
     case ADD_FAV:
+      return { ...state, myFavorites: payload, allCharacters: payload };
+    case REMOVE_FAV:
+      return { ...state, myFavorites: payload, allCharacters: payload };
+    case FILTER:
+      if (payload === "All")
+        return {
+          ...state,
+          myFavorites: state.allCharacters,
+        };
+      const filteredCharacters = state.allCharacters.filter(
+        (char) => char.gender === payload
+      );
       return {
         ...state,
-        myFavorites: [...state.allCharacters, action.payload],
-        allCharacters: [...state.allCharacters, action.payload],
+        myFavorites: filteredCharacters,
+      };
+    case ORDER:
+      let orderCopy = [...state.allCharacters];
+      if (payload === "A") {
+        orderCopy.sort((a, b) => {
+          if (a.name > b.name) return 1;
+          else return -1;
+        });
+      } else if (payload === "D") {
+        orderCopy.sort((a, b) => {
+          if (a.name < b.name) return 1;
+          else return -1;
+        });
+      }
+      return {
+        ...state,
+        myFavorites: orderCopy,
+      };
+    case "ERROR":
+      return {
+        ...state,
+        errors: payload,
       };
 
-    case REMOVE_FAV:
-      return {
-        ...state,
-        myFavorites: state.myFavorites.filter(
-          (fav) => fav.id !== Number(action.payload)
-        ),
-      };
     default:
       return { ...state };
-
-    case FILTER:
-      const filtrado = state.allCharacters.filter(
-        (gender) => gender.gender === action.payload
-      );
-
-      return {
-        ...state,
-        myFavorites: filtrado,
-      };
-
-    case ORDER:
-      const copyCharacters = [...state.allCharacters];
-      return {
-        ...state,
-        myFavorites:
-          action.payload === "A"
-            ? copyCharacters.sort((a, b) => a.id - b.id)
-            : copyCharacters.sort((a, b) => b.id - a.id),
-      };
   }
-};
-
-export default reducer;
+}

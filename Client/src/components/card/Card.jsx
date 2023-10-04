@@ -4,61 +4,28 @@ import styles from "./Card.module.css";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
-//! FUNCTIONS
-export function mapDispatchToProps(dispatch) {
-  return {
-    addFav: function (character) {
-      dispatch(addFav(character));
-    },
-    removeFav: function (id) {
-      dispatch(removeFav(id));
-    },
-  };
-}
-
-const mapStateToProps = (props) => {
-  return {
-    myFavorites: props.myFavorites,
-  };
-};
-
 //? Inicio de Card
 
 function Card(props) {
-  //! Inicio de Card
-
-  //! DESTRUCTURING
-  const { id, name, species, gender, status, image, character, onClose } =
-    props;
-
-  //! ESTADOS
-
-  //* DESAFÍO: te desafiamos a que reconstruyas ese useEffect, pero utilizando un bucle For en lugar de un .forEach().
+  const [isFav, setIsFav] = useState(false);
   useEffect(() => {
-    props.myFavorites?.forEach((fav) => {
-      if (fav.id === id) {
+    props.allCharacters.forEach((fav) => {
+      if (fav.id === props.id) {
         setIsFav(true);
       }
     });
-  }, [props.myFavorites]);
+  }, [props.allCharacters]);
 
-  const [isFav, setIsFav] = useState(false);
+  const { id, name, species, gender, status, image, onClose } = props;
+
   //! FUNCIONES
-  const handleFavorite = (data) => {
-    if (isFav === true) {
+  const handleFavorite = (event) => {
+    if (isFav) {
       setIsFav(false);
-      props.removeFav(data);
-    }
-    if (isFav === false) {
+      props.removeFav(props.id);
+    } else {
       setIsFav(true);
-      props.addFav({
-        id,
-        name,
-        species,
-        gender,
-        status,
-        image,
-      });
+      props.addFav(props);
     }
   };
 
@@ -80,6 +47,22 @@ function Card(props) {
       <img src={image} alt={name} />
     </div>
   );
+}
+//! FUNCTIONS
+const mapStateToProps = (props) => {
+  return {
+    allCharacters: props.allCharacters,
+  };
+};
+function mapDispatchToProps(dispatch) {
+  return {
+    addFav: function (character) {
+      dispatch(addFav(character));
+    },
+    removeFav: function (id) {
+      dispatch(removeFav(id));
+    },
+  };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Card);
