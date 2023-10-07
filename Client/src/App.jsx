@@ -21,10 +21,6 @@ function App() {
   //! Donde estamos posicionados a la hora de hacer login
   const location = useLocation();
 
-  //* VARIABLES
-  const email = "";
-  const password = "";
-
   //* FUNCIONES
 
   //! Funcion Async Await de login
