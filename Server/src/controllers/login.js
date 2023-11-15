@@ -2,13 +2,13 @@ const { User } = require("../DB_connection");
 
 const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password } = req.query;
 
     if (email && password) {
       const actualUser = await User.findOne({ where: { email: email } });
       if (actualUser) {
         if (actualUser.password === password) {
-          res.status(200).json({ access: true });
+          return res.status(200).json({ access: true });
         }
         return res.status(403).send("Contraseña incorrecta");
       }
@@ -16,7 +16,7 @@ const login = async (req, res) => {
     }
     return res.status(400).send("Faltan Datos");
   } catch (error) {
-    res.status(500).send(error.message);
+    return res.status(500).send(error.message);
   }
 };
 

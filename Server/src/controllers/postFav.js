@@ -10,7 +10,7 @@ const postFav = async (req, res) => {
     }
     return res.status(401).send("Faltan datos");
   } catch (error) {
-    res.status(500).send(error.message);
+    return res.status(500).send(error.message);
   }
 };
 

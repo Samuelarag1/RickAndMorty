@@ -27,14 +27,14 @@ function App() {
   async function login(userData) {
     try {
       const { email, password } = userData;
-      const URL = "http://localhost:3001/rickandmorty/login";
-      const { data } = await axios(
-        URL + `?email=${email}&password=${password}`
+      const response = await fetch(
+        `http://localhost:3001/rickandmorty/login?email=${email}&password=${password}`
       );
+      const data = await response.json();
       setAccess(data.access);
       data.access && navigate("/home");
     } catch (error) {
-      throw new Error(error);
+      throw new Error(error.message);
     }
   }
   //! Redireccion en caso de no acceder con los datos ingresados

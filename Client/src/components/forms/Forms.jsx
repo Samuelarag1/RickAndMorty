@@ -12,9 +12,10 @@ export default function Forms({ login }) {
   });
 
   const handleChange = (e) => {
+    const { name, value } = e.target;
     setUserData({
       ...userData,
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
   };
 
